@@ -125,6 +125,7 @@
 			  </tr>
 			</table>
 		</div> <br /> <br />
+		<p>At rate 1, the rasterizer still produces noticeable aliasing with sharp, jagged edges. Switching to 4 samples saw edges appear smoother, but the color transitions are still very abrupt. At maximum rate 16, there is significant improvement in representing the actual shape of the triangle, with smooth, blended edges of varying color intensities. This effect occurs because higher sample rates capture more edge detail, reducing abrupt color transitions between pixels. By averaging more finely distributed samples, we achieve a more realistic representation of the intended shape.</p>
 
 		<hr />
 
@@ -190,6 +191,12 @@
 			</table>
 		</div> <br /> <br />
 
+		<i style="font-family: Times New Roman;">Nearest pixel, supersample 1 (upper left): Some smoothing, noticeable jaggies along curved portions <br>
+			Bilinear pixel, supersample 1 (upper right): Smoother texts and smoother corners, albeit noisier 
+			border between blue / yellow <br>
+			Nearest pixel, supersample 16 (bottom left): Improvement in details, corners now more refined<br>
+			Bilinear pixel, supersample 16 (bottom right): softer borders and corners, still relatively noisy border
+			</i><br><br>
 		It is clear that the two methods attend to different parts of the picture. Both methods showed improvements with a higher supersampling rate, with bilinear sampling at supersampling rate of 16 per pixel producing the best overall picture that balances both the rough integrity of the curved shape  as well as the lines of the texts. From this example we can see that the two methods will produce a large difference when processing areas with high frequency texture details (ex: texts). Nearest sampling would produce blocky artifacts while bilinear sampling could better attend to the slim lines and surfaces. This is because at the border of a letter, nearest sampling may catch a pixel that is outside of the letter and produce an incorrect sample. Bilinear sampling, however, interpolates all four nearest pixels nearby, which is more robust against the changing strokes and ligatures of typeface. </p>
 
 		<hr />
