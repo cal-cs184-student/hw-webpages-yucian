@@ -1,116 +1,211 @@
 <html>
 	<head>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-		<style>
-			h1 {
-				text-align: center;
-			}
-
-			.container {
-				margin: 0 auto;
-				padding: 60px 20%;
-			}
-
-			figure {
-				text-align: center;
-			}
-
-			img {
-				display: inline-block;
-			}
-
-			body {
-				font-family: 'Inter', sans-serif;
-			}
-		</style>
+		<link rel="stylesheet" href="../style.css">
 	</head>
 	<body>
-		<div class="container">
-		<h1>CS184/284A Spring 2025 Homework 2 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="display: flex; flex-direction: row; align-items: left; gap: 1rem;">
+			<div style="min-width: 20%;">
+				<div class="floating" style="display: flex; flex-direction: column; align-items: left; gap: 1rem;">
+					<a class="icon" href="https://cal-cs184-student.github.io/hw-webpages-yucian/">
+						<img src="images/profile-02 copy.png" alt="logo" class="icon"/>
+					</a>
+					<div style="padding: 12px;">
+						<h3 style="margin: 0;">YuCian Liu</h3>
+						<p style="margin: 0;">CS184/284A Spring 2025</p>
+					</div>
+				</div>
 
-		<br>
+				<div class="floating bookmarks">
+					<a class="a-button" href="#C0">Overview</a> <br> <br>
+					<a class="a-button" href="#C1">Section I</a> <br> <br>
+					<a class="a-button" href="#C2">Section II</a>
+				</div>
+			</div>
+			<div class="container" style="overflow-x: hidden;">
+				<h1>Homework 2 Write-Up</h1>
+				<div style="display: flex; justify-content: flex-start; gap: 4rem;">
+					<div>Names: YuCian Liu</div>
+					<div>Date: February 28th, 2025</div>
+				</div>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+				<br>
 
-		<br>
-		
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+				Home webpage: <a class="chip" href="https://cal-cs184-student.github.io/hw-webpages-yucian/">cal-cs184-student.github.io/hw-webpages-yucian/</a>
+			
+				<br>
 
-		<figure>
-			<img src="teapot.png" alt="Teapot" style="width:50%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+				GitHub repository: <a class="chip" href="https://github.com/cal-cs184-student/sp25-hw2-yc">cal-cs184-student/sp25-hw2-yc</a> <br> <br> <br> <br>
+				<!--
+				We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
+				-->
 
-		<!--
-		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
-		-->
+				<section>
+					<div class="anchor" id="C0"></div>
+					<h2>Overview</h2>
+					<p>
+						In this homework I implemented several great methods of interpolating and smoothing out rendered shapes, including the de Casteljau algorithm for Bezier curves and surfaces, and many mesh operations that utilize the half-edge data structure for triangle meshes: area-weighted vertex normals, edge flip, edge split, and loop subdivision for mesh upsampling. It builds upon the fundamendals of Homework 1 and adds support for more complex 3D shapes. One of the most interesting things I've learned was the significance of accurately calculating the position of a vertex in a mesh, because even a slightly perturbed position can lead to a very different rendered shape. This was especially true for meshes that have sharp edges, are asymmetrical, or have high degree vertices. Accurately dealing with these cases was essential to building a robust tool.
+					</p>
+				</section>
 
-		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+				<hr /> 
 
-		<h2>Section I: Bezier Curves and Surfaces</h2>
+				<section>
+					<div class="anchor" id="C1"></div>
+					<h3>Section I: Bezier Curves and Surfaces</h3>
 
-		<h3>Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					<div class="content">
+						<h2>Part 1: Bezier curves with 1D de Casteljau subdivision</h2>
+						<p>
+							One of the best ways to fit Bezier curve onto any given set of control points is by using de Casteljau's algorithm. The algorithm performs linear interpolation on each consecutive pair of control points by first finding point(s) on the original edges according to the "weight" parameter <code>t</code>, which determines how much each point should contribute to the locations of the next level of intermediate control points. This is done by the proportion-based equation \((1-t)p_i+tp_{i+1}\). By applying this recursively, the algorithm can subdivide and simplify the original control point polygon, all the way until we reach a single point. This gives us enough information to construct a Bezier curve based on the original control points
+						</p>
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			</table>
-		</div>
+						<figure>
+							<img src="images/pt1/lv0.png" width="33% - 0.5rem"/>
+							<!-- <figcaption>Caption goes here.</figcaption> -->
+							<img src="images/pt1/lv1.png" width="33%"/>
+							<!-- <figcaption>Caption goes here.</figcaption> -->
+								<img src="images/pt1/lv2.png" width="33%"/>
+							<!-- <figcaption>Caption goes here.</figcaption> -->
+						</figure>
+						<figure>
+							<img src="images/pt1/lv3.png" width="33%"/>
+							<!-- <figcaption>Caption goes here.</figcaption> -->
+							<img src="images/pt1/lv4.png" width="33%"/>
+							<!-- <figcaption>Caption goes here.</figcaption> -->
+							<img src="images/pt1/lv5.png" width="33%"/>
+							<!-- <figcaption>Caption goes here.</figcaption> -->
+						</figure>
+						<figure>
+							<img src="images/pt1/lvf.png" width="100%"/>
+						</figure>
+						<figcaption>Each level of evaluation from the original control points to the final Bezier curve</figcaption>
 
-		<h3>Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						<figure>
+							<img src="images/pt1/variant.png" alt="a slightly altered set of control points" width="100%"/>
+						</figure>
+						<figcaption>Bezier curve constructed from a slightly altered set of 6 control points</figcaption>
+					</div>
 
-		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
+					<div class="content">
+						<h2>Part 2: Bezier surfaces with separable 1D de Casteljau</h2>
+						<p>de Casteljau algorithm can easily extend to Bezier surfaces, as they can be broken down into many separable 1D Bezier curves. The same interpolation with a single parameter <code>u</code> is performed through all the individual 1D curves, and then the second parameter <code>v</code> is applied to the final points found from the 1D Bezier interpolations, sweeping out the surface covered by all the individual curves. Here I implemented it in three hierarchical functions: the one-level interpolation base case; a function that repeatedly calls the base case helper to evaluate each 1D curve (represented by rows in the list of control points); and finally a function that collects all the final points from each curve and does one final 1D interpolation on these points.</p>
 
-		<h3>Part 3: Area-weighted vertex normals</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						<figure>
+							<img src="images/pt2/teapot_demo.png" alt="teapot" width="100%"/>
+						</figure>
+						<figcaption>A very nice looking teapot generated by the de Casteljau algorithm expanded on Bezier surfaces</figcaption>
+					</div>
+				</section>
 
-		<h3>Part 4: Edge flip</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<hr/> 
 
-		<h3>Part 5: Edge split</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<section>
+					<div class="anchor" id="C2"></div>
+					<h3 >Section II: Triangle Meshes and Half-Edge Data Structure</h3>
+					
+					<div class="content">
+						<h2>Part 3: Area-weighted vertex normals</h2>
+						<p>
+							I implemented the area weighted vertex normals via a do-while loop that traverses through each halfedge that starts from the current vertex and finds pairs of neighbor vertices to calculate the area and the normal vector of their respective face. Similar to <code>printNeighborPositions(...)</code>, the next halfedge extending outward from the current vertex can be found by finding the "next" of the current halfedge's twin. With these two halfedges we can apply <code>->next()->vertex</code> to find the corresponding neighbor vertices. Subtracting the position vectors of these vertices by the position of the origin vertex would give us two vectors which we can apply cross product to find the normal. The area, then, is found by dividing the norm of this normal vector by 2. We would add the product of the unit normal vector and the area to the running summation. *(Here the normal vector is negated to flip its orientation and face outwards from the mesh) <br><br> We continue to traverse until we return to the halfedge we started with. By then we would have the sum of all area weighted vertex normals in faces that contain the starting vertex. This is normalized to find the desired value.
+						</p>
+						
+						<figure>
+							<img src="images/pt3/no_norm.png" width="50%"/>
+							<img src="images/pt3/with_norm.png" width="50%"/>
+						</figure>
+						<figcaption>1 (left) Teapot shading without vertex normals</figcaption>
+								<figcaption>2 (right) Teapot shading with Phong shading enabled</figcaption>
+					</div>
 
-		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					<div class="content">
+						<h2>Part 4: Edge flip</h2>
+						<p>
+							I implemented edge flip by first gathering all the mesh elements (10 halfedges, 2 faces, 4 vertices, 5 edges) and then reassigning their respective pointers to complete the "rotation" of the triangles. Each of the halfedges are first found by traversing from the halfedge and its twin at the starting edge <code>e0</code>, and subsequently calling <code>->next()</code> to cycle through the halfedges contained within the two faces. Calling <code>->twin()</code> on non-starting edge halfedges allowed me to find the "outside" halfedges that don't belong to the faces. With these halfedges I could then find the remaining faces, vertices, and edges by calling the respective halfedges. <br> <br> The real struggle was updating pointers to elements. For internal halfedges, most of their pointers have to be changed (except a few pointers to vertices, edges, and faces, because they remained the same). The <code>setNeighbors</code> function was used here to speed up the process, taking into account the "90 degrees rotation" of all inner halfedges. It was a similar process for outside halfedges, except they have lesser pointers to update because their <code>->next()</code> and <code>->face()</code> do not belong to the current triangle mesh. Once this is completed I assigned correct <code>->halfedge()</code> pointers to faces, vertices, and edges. An interesting implementation here is that I consistently prioritized halfedges that are counterclockwise and come first in order. For example, when assigning a halfedge to vertex a, there was 3 options: h1, h3, and h7. I deterministically chose h1 under the rule I created. This has helped me debug a lot faster, and will hopefully make it easier for me to write subsequent parts of the assignment.
+						</p>
+						<figure>
+							<img src="images/pt4/before_flip.png" width="50%"/>
+							<img src="images/pt4/after_flip.png" width="50%"/>
+						</figure>
+						<figcaption>1 (left) Before edge flip</figcaption>
+						<figcaption>2 (right) After edge flip</figcaption>
+					
+					<p>
+						My debugging journey was very eventful to say the least, because I ended up finding bugs in both the process of fetching mesh elements and the reassigning of pointers. At first the teapot would produce huge, ugly holes after just 2-3 edge flips, and that was pretty alarming. I had to utilize the <code>check_for</code> functions to really start visualizing the connectivity of each element, and at one point I was so desperate I copied down the addresses of multiple halfedges and compared each of them with the other pointers displayed by the function. Turned out the whole mess was because I forgot that the outside halfedges do not point to any of the two faces. That's when I realized I should probably start implementing everything counterclockwise, and putting strict restrictions on the orientation of certain halfedges. That solved a huge portion of the problem.
+					</p>
+				</div>
 
-		<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<div class="content">
+					<h2>Part 5: Edge split</h2>
+					<p>
+						With experience from the previous part, implementing edge split was much more straightforward. I implemented the operation again by first fetching all the required elements from the existing mesh, and this time also creating new elements: 6 new halfedges, 2 new faces, 1 new vertex, and 3 new edges. Then it was about reassigning pointers so that they fit the structure of the newly modified mesh. An interesting choice I made here was to break apart the halfedge twin pair that used to be on <code>e0</code> and make them stay pointing outwards from their original vertices. This essentially ensures that the vertices on the two ends of the splitting edge can retain their halfedge pointers (as all halfedges pointing away from the vertices will not be modified under this setup). With this small design choice I was able to greatly decrease the number of pointers I needed to reassign after the split. New edges <code>e5, e6, e7</code> are added to the interior, connecting to the new vertex <code>e</code>. The position of this new vertex was calculated using the midpoint formula, applied to vertices <code>b, d</code> that was originally sharing edge <code>e0</code>: <code>(bpos + dpos) / 2</code>.
+					</p>
+					<figure>
+						<img src="images/pt5/default.png" width="33%"/>
+						<img src="images/pt5/split.png" width="33%"/>
+						<img src="images/pt5/splitnflip.png" width="33%"/>
+					</figure>
+					<figcaption>1 (left) Default picture</figcaption>
+					<figcaption>2 (middle) After edge split</figcaption>
+					<figcaption>3 (right) After edge split and edge flip</figcaption>
+					<p>
+						Debugging for this part was much smoother compared to part 4. It mostly was about sticking to my own rule of assigning halfedges (i.e. prioritizing counterclockwise, smaller numbered halfedges) to make sure later on in part 6 I would have an easier time implementing the subdivision.
+					</p>
+				</div>
 
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
+				<div class="content">
+					<h2>Part 6: Loop subdivision for mesh upsampling</h2>
+					<p>
+						The loop subdivison algorithm was implemented according to the recommended 5-step process, using a total of 5 loops to calculate updated positions of all vertices, complete edge splits and flips, and finally copying over the new positions of all vertices. The first loop calculates the new positions of existing vertices using the weighted formula <code>(1 - nu) * old_position + u * sum_of_positions_of_neighbors</code>, and the second loop calculates the new positions of the new vertices created by edge splits. These positions are temporarily saved in the <code>newPosition</code> variables of the mesh elements to prevent overwriting. The third loop then completes the edge splits over all edges. Based on the implementation in part 5, there are a total of 3 new edges created in the process, and one of those is the other half of the original edge split in two. With the function guaranteeing that the returned <code>VertexIter</code> points towards a halfedge that lies on the original edge, we can then easily traverse from this vertex to the two neighboring new edges and label them as new. This is essential in creating a filtering condition for the fourth loop to perform correct edge flips without accidentally counting a branch of the original edge as a new edge. The final loop copies over the new positions of all vertices, completing the process. <br> <br> At the beginning I had the intention to combine step 1 and 2 into one loop over all faces, with the intention to then traverse through the vertices and edges of each face to calculate updated positions. This proved to be very difficult to implement, as it required more lines of code just to make sure vertices are not overidden in subsequent loops, and I ended up spending a lot of time debugging. Ultimately I scrapped the idea and went for a more conventional 5 step approach. A debugging trick that I found useful was to interact with the GUI and rountinely commenting out different parts of the code that modified the <code>isNew</code> variables of mesh elements. I got into the trouble of flipping too many unnecessary edges, and this method helped me visualize the effects each part of the algorithm had on the final mesh output.
+					</p>
+						
+					<figure>
+						<img src="images/pt6/demo1_before.png" width="50%"/>
+						<img src="images/pt6/demo1_after.png" width="50%"/>
+					</figure>
+					<figure>
+						<img src="images/pt6/demo2_before.png" width="50%"/>
+						<img src="images/pt6/demo2_after.png" width="50%"/>
+					</figure>
+					<figcaption>The general effect of loop subdivision is smoothing out the mesh, but it also tends to shrink the overall shape due to the weighted averaging of vertex positions</figcaption>
+
+					<p>
+						Generally meshes become smoother with each iteration, whilst their overall shape shrinks ever so slightly due to the weighted averaging of vertex positions. I also noticed that sharp corners tend to round off and sharp edges gradually become more curved. This likely happens because the vertex update rule distributes weight from neighboring vertices, making the mesh appear more concave. Pre-splitting certain edges helped alleviate some of these effects, adding extra vertices to help retain the sharpness, as demonstrated in the figure below:
+					</p>
+					<figure>
+						<img src="images/pt6/demo1_before.png" width="50%"/>
+						<img src="images/pt6/demo3_presplit.png" width="50%"/>
+					</figure>
+					<figcaption>Here the upper left side of the ring preserves more clearly its sharpness from the original mesh before upsampling</figcaption>
+
+					<p>
+						The cube file is an interesting scenario where the loop subdivision algorithm successfully smooths out the mesh, but fails to subdivide symmetrically. This is because the default file has many single edges that cut across the cube's faces, which gives certain corner vertices higher degree. This means that when updating the positions of these vertices, we take in a larger sum of neighbor positions, and the vertices get displaced more drastically than others. To ensure cube.dae subdivides symmetrically (preserving its cubical shape), I preprocessed the mesh by splitting all the edges that cut across the cube's faces. This allows each corner vertex to be degree 6 and each face vertex to be degree 4, which eliminates the uneven distribution of connectivity. The result (shown below) is a mesh that is able to subdivide whilst retaining its cubical shape.
+					</p>
+					<figure>
+						<img src="images/pt6/demo4_before.png" width="33%"/>
+						<img src="images/pt6/demo4_side.png" width="33%"/>
+						<img src="images/pt6/demo4_top.png" width="33%"/>
+					</figure>
+					<figcaption>After redistributing the connectivity of the mesh, the loop subdivision algorithm is able to subdivide the cube symmetrically</figcaption>
+
+				</div>
+
+				<!-- <div class="content">
+					<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</div> -->
+
+				<!-- <h2>Additional Notes (please remove)</h2>
 				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+					<li>You can also add code if you'd like as so: <code>code code code</code></li>
+					<li>If you'd like to add math equations, 
+						<ul>
+							<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
+							<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
+						</ul>
+					</li>
+				</ul> -->
+			</div>
 		</div>
 	</body>
 </html>
