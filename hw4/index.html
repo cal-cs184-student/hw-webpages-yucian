@@ -1,109 +1,264 @@
 <html>
 	<head>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-		<style>
-			h1 {
-				text-align: center;
-			}
-
-			.container {
-				margin: 0 auto;
-				padding: 60px 20%;
-			}
-
-			figure {
-				text-align: center;
-			}
-
-			img {
-				display: inline-block;
-			}
-
-			body {
-				font-family: 'Inter', sans-serif;
-			}
-		</style>
+		<link rel="stylesheet" href="../style.css">
 	</head>
 	<body>
-		<div class="container">
-		<h1>CS184/284A Spring 2025 Homework 4 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="display: flex; flex-direction: row; align-items: left; gap: 1rem;">
+			<div style="min-width: 20%;">
+				<div class="floating" style="display: flex; flex-direction: column; align-items: left; gap: 1rem;">
+					<a class="icon" href="https://cal-cs184-student.github.io/hw-webpages-yucian/">
+						<img src="../profile-02 copy.png" alt="logo" class="icon"/>
+					</a>
+					<div style="padding: 12px;">
+						<h3 style="margin: 0;">YuCian Liu</h3>
+						<p style="margin: 0;">CS184/284A Spring 2025</p>
+					</div>
+				</div>
 
-		<br>
+				<div class="floating bookmarks">
+					<a class="a-button" href="#C0">Overview</a> <br> <br>
+					<a class="a-button" href="#C1">Part 1</a> <br> <br>
+					<a class="a-button" href="#C2">Part 2</a> <br> <br>
+					<a class="a-button" href="#C3">Part 3</a>
+				</div>
+			</div>
+			<div class="container" style="overflow-x: hidden;">
+				<h1>Homework 4 Write-Up</h1>
+				<div style="display: flex; justify-content: flex-start; gap: 4rem;">
+					<div>Names: YuCian Liu</div>
+					<div>Date: April 9th, 2025</div>
+				</div>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+				<br>
 
-		<br>
+				Home webpage: <a class="chip" href="https://cal-cs184-student.github.io/hw-webpages-yucian/">cal-cs184-student.github.io/hw-webpages-yucian/</a>
+			
+				<br>
 
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+				GitHub repository: <a class="chip" href="https://github.com/cal-cs184-student/sp25-hw4-yc93">cal-cs184-student/sp25-hw4-yc93</a> <br> <br> <br> <br>
+				<!--
+				We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
+				-->
 
-		<figure>
-			<img src="clothsim.png" alt="Cloth draped over sphere" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+				<section>
+					<div class="anchor" id="C0"></div>
+					<h2>Overview</h2>
+					<p>
+						In this assignment I implemented a higher level object simulation renderer that enables shading for realistic textures, materials, and lighting effects. The entire simulation surrounds the topic of modeling realistic cloth movements, including how it interacts with outside objects, but the end result is something versatile that can really be applied to any other materials with a certain level of rigidity and mass. I have learned a lot from this assignment, especially seeing how the structures we've implemented in the previous homeworks all translate into this final stage where we can take vertices and fragments and apply realistic shading to them. For me it was very rewarding to complete the cycle in the rendering pipeline, as well as learning how simple physics relations can be used to model many interesting everyday objects.
+					</p>
+				</section>
 
-		<!--
-		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
-		-->
+				<hr /> 
 
-		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+				<section>
+					<div class="anchor" id="C1"></div>
+					<h2>Part 1: Masses and springs</h2>
 
-		<h2>Part 1: Masses and springs</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					<div class="content">
+						<!-- <h3>Includes: Building grid</h3> -->
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			</table>
-		</div>
+						<figure>
+							<img src="images/pt1/demo1.png" width="50%"/>
+							<img src="images/pt1/demo2.png" width="50%"/>
+						</figure>
+						<figure>
+							<img src="images/pt1/no_shear.png" width="33%"/>
+							<img src="images/pt1/only_shear.png" width="33%"/>
+							<img src="images/pt1/full.png" width="33%"/>
+						</figure>
+						<figcaption>Mesh with no shearing constraints (left), only shearing constraints (middle), and full constraints applied (right).</figcaption>
+					</div>
+				</section>
 
-		<h2>Part 2: Simulation via numerical integration</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<hr />
 
-		<h2>Part 3: Handling collisions with other objects</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<section>
+					<div class="content">
+						<h2>Part 2: Simulation via numerical integration</h2>
+						<h3>Includes: total force calculation, position updates and constraints</h3>
+						<p>
+							Changing the parameters of the simulation produced many interesting results. For the spring constant <code>ks</code>, changing it to a low value (500 N/m) made the cloth feel stretchy and elastic, and visually it sagged more and produced more creases under external force, which is gravity. At a higher value of 50000 N/m, however, we see that the cloth resists stretching and maintains its shape better. It also responds to forces quicker, with sharp and snappy motions before coming to a rest sooner than the 500 N/m setting.
+						</p>
 
-		<h2>Part 4: Handling self-collisions</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						<figure>
+							<img src="images/pt2/ks500.png" alt="cloth with ks 500" width="50%"/>
+							<img src="images/pt2/ks50000.png" alt="cloth with ks 50000" width="50%"/>
+						</figure>
+						<figcaption>Renders of the <code>pinned2</code> cloth with varying spring constant settings.</figcaption>
 
-		<h2>Part 5: Shaders</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						<p>
+							<br><br> As for density, setting it to a lower value of 2 g/cm^2 made it less prone to the effects of gravity, and the entire piece of cloth feels very light and floaty. Noticeably, the simulation produced less creases compared to the default settings. At a higher value of 150 g/cm^2, the cloth visibly has much more defined creases and now even slightly curves outwards at the two non-pinned corners, which is expected because the cloth is now heavier.
+						</p>
 
-		<h2>(Optional) Part 6: Extra Credit - Additional cloth simulation features!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
+						<figure>
+							<img src="images/pt2/density2.png" alt="cloth with density 2" width="50%"/>
+							<img src="images/pt2/density150.png" alt="cloth with density 150" width="50%"/>
+						</figure>
+						<figcaption>Renders of the <code>pinned2</code> cloth with varying density settings.</figcaption>
+
+						<p>
+							<br><br> For damping, a low value of approx. 2% allowed the cloth to sway and move more freely between each time step. It is able to swing past the vertical 90 degree angle and took several cycles to finally come to a resting position. When it was set to a higher value like 80%, it exhibited slower, more defined movements from its initial position, gradually lowering to the resting position. Both produced very noticeable differences compared to the default settings.
+						</p>
+
+						<figure>
+							<img src="images/pt2/damping2_1.png" alt="cloth with damping 2" width="50%"/>
+							<img src="images/pt2/damping80.png" alt="cloth with damping 80" width="50%"/>
+						</figure>
+						<figcaption>Renders of the <code>pinned2</code> cloth with varying damping settings.</figcaption>
+
+						<figure>
+							<img src="images/pt2/pinned4.png" alt="cloth with 4 pinned points" width="75%"/>
+						</figure>
+						<figcaption>Final render of the the cloth with 4 pinned points.</figcaption>
+					</div>
+				</section>
+
+				<hr/> 
+
+				<section>
+					<div class="anchor" id="C3"></div>
+					
+					<div class="content">
+						<h2>Part 3: Handling collisions with other objects</h2>
+						<h3>Includes: Collisions with spheres and planes</h3>
+						<p>
+							Both of my implementations of handling collisions with spheres and planes involve checking the position of a given point (on the cloth) relative to the surface of the object in target. For spheres this means comparing the distance from the point to the sphere origin with the radius of the sphere, such that if a point is located within the radius, the function will apply a correction vector that bumps it back up to the directional tangential point on the surface. This allows the cloth to correctly cover and overlay the sphere.
+
+							<br><br> For planes it involves checking quantities that relate the point's <code>position</code> and <code>last_position</code> with the plane's normal vector. The dot product of the normal vector and the respective distance vectors (position minus point on plane) gives us useful information on which side of the plane the point sits on: if the value is positive, the point is on the same side as the upright direction of the normal vector, and on the opposite side if otherwise. Hence, by checking if there is a sign change between that of <code>last_position</code> and <code>position</code>, we can deduce whether a point has crossed the plane. If it does, then we again apply a correction vector towards the respective side.
+						</p>
+						
+						<figure>
+							<img src="images/pt3/sphere_ks500.png" alt="ks 500 cloth on sphere" width="33%"/>
+							<img src="images/pt3/sphere_ks5000.png" alt="ks 5000 cloth on sphere" width="33%"/>
+							<img src="images/pt3/sphere_ks50000.png" alt="ks 50000 cloth on sphere" width="33%"/>
+						</figure>
+						<figcaption>This diagram shows the differences in resting state on the sphere when simulating with a cloth of spring constant 500 (left), 5000 (default, center), and 50000 (right). Similar to the conclusion from the previous part, at spring constant=500 the cloth is less stiff and is able to drape in a more deformed shape following the roundedness of the sphere. Whereas at spring constant=50000 the cloth is visibly stiffer and does not curve inwards with the sphere.</figcaption>
+
+						<figure>
+							<img src="images/pt3/plane.png" alt="cloth at rest on a plane" width="75%"/>
+						</figure>
+						<figcaption>A picture of the cloth laying at rest on the plane.</figcaption>
+					</div>
+				</section>
+
+				<hr/> 
+
+				<section>
+					<div class="anchor" id="C3"></div>
+					
+					<div class="content">
+						<h2>Part 4: Handling self collisions</h2>
+						<h3>Includes: Spatial hashing implementation</h3>
+						<p>
+							My implementation of self collision involves hashing the positions by the specified <code>w</code>, <code>h</code>, and <code>t</code>, building a map, and iterating to test for collisions. The hash function utilizes these given quantities to take floor divisions of the xyz coordinates of the position, effectively assigning them into "buckets." The final float index is calculated via this formula: <code>x + y * num_width_points + z * num_width_points * num_height_points</code>. This allows the map to maintain a degree of 3D relativity while minimizing skewed hashes.
+
+							<br><br> In the main <code>self_collide</code> function, relevant candidates are then fetched from the same bucket the current point resides in. Thickness check is applied to each pairing to ensure all distance requirements are being met. There is also a running count and skip mechanism to disallow self comparisons. This allows for accurate calculations of the required amounts of perturbation at each point.
+						</p>
+						
+						<figure>
+							<img src="images/pt4/clothfold1.png" alt="cloth folds on itself" width="25%"/>
+							<img src="images/pt4/clothfold2.png" alt="cloth folds on itself" width="25%"/>
+							<img src="images/pt4/clothfold3.png" alt="cloth folds on itself" width="25%"/>
+							<img src="images/pt4/clothfold4.png" alt="cloth folds on itself" width="25%"/>
+						</figure>
+						<figcaption>A 4-step process of how the cloth folds on itself. After implementing self collision, it no longer clips through itself and is able to show realistic creases and folds.</figcaption>
+
+						<figure>
+							<img src="images/pt4/fold_density2.png" alt="cloth, density 2, folds on itself" width="50%"/>
+							<img src="images/pt4/fold_density150.png" alt="cloth, density 150, folds on itself" width="50%"/>
+						</figure>
+						<figcaption>A greater density like 150 (right) produces a lot more creases as the cloth drops to rest, compared to the lighter setting (left).</figcaption>
+
+						<figure>
+							<img src="images/pt4/fold_ks500.png" alt="cloth, ks 500, folds on itself" width="50%"/>
+							<img src="images/pt4/fold_ks50000.png" alt="cloth, ks 50000, folds on itself" width="50%"/>
+						</figure>
+						<figcaption>Exhibiting almost opposite effects to the density settings, a greater spring constant like 50000 (right) makes the cloth more rigid and less prone to folds, whereas a lower setting (left) produces more folds as it drops and comes to a rest.</figcaption>
+
+					</div>
+				</section>
+
+				<hr/> 
+
+				<section>
+					<div class="anchor" id="C3"></div>
+					
+					<div class="content">
+						<h2>Part 5: Cloth sim shaders</h2>
+						<h3>Includes: Spatial hashing implementation</h3>
+						<p>
+							A shader program, of all purposes, is a pair of custom mini-programs running quickly one after another on a GPU to control exactly how rendered objects look. In this homework we fortunately have the opportunity to implement parts of both. The first part, the vertex shader, grabs each vertex of the model and figures out its final spot on a 2D screen, also passing along useful info like texture coordinates (UVs) and the surface direction (normal) at that point.
+
+							Then, the fragment shader takes over. For every single pixel covered by the object on the screen, it calculates the final color. It uses the smoothly blended information (like normals and UVs) passed from the vertex shader, looks up texture colors, and performs lighting calculations based on light sources and material properties (shininess, base color, etc.) defined by the file. Essentially, the vertex shader sets the stage, and the fragment shader paints each pixel based on lighting and material rules to create the final image.
+						</p>
+
+						<p>
+							One of the shaders implemented in this assignment is the Blinn-Phong shading model. This model calculates the color of a point on an object's surface by summing three light components: ambient light, which provides a constant, low-level illumination to simulate general light bouncing around; diffuse light, which simulates scattering from matte surfaces, brightest where light hits directly and dimmer at glancing angles, revealing the object's base color and shape; and specular light, which adds shiny highlights by checking how closely the surface normal aligns with a special halfway vector (between the light direction and the viewer's direction), with a shininess value controlling the highlight's sharpness. Combining these three gives a good approximation of how light interacts with many common materials.
+						</p>
+						
+						<figure><h3 style="width:25%">Ambient</h3><h3 style="width:25%">Diffuse</h3><h3 style="width:25%">Specular</h3><h3 style="width:25%">Full</h3></figure>
+						<figure>
+							<img src="images/pt5/phong_ambient.png" alt="phong, ambient" width="25%"/>
+							<img src="images/pt5/phong_diffuse.png" alt="phong, diffuse" width="25%"/>
+							<img src="images/pt5/phong_specular.png" alt="phong, specular" width="25%"/>
+							<img src="images/pt5/phong_full.png" alt="phong, full" width="25%"/>
+						</figure>
+						<figcaption>Blinn-Phong Reflection dissected into each component.</figcaption>
+
+						<figure>
+							<img src="images/pt5/texture.png" alt="ice cream texture variant" width="75%"/>
+						</figure>
+						<figcaption>My attempt at creating a tasty looking scoop of choco chip ice cream.</figcaption>
+
+						<p>
+							To demonstrate bump and displacement shaders, I selected texture 4, which is a nice, classy picnic cloth. From the figures below it is easy to see that both methods provide an illusion of depth by slightly adjusting the surface normals at each location on the sphere (and cloth) with respect to the height factor, producing a fine pattern that looks as if it was directly engraved onto the sphere. At the same height and normal settings, the displacement shader, in addition to making texture based changes, shifts every vertex on the surface of the sphere outwards to suit the texture. It is able to achieve an even more realistic depiction of rough surfaces, albeit at the expense of a more rigid looking sphere.
+						</p>
+						<figure>
+							<img src="images/pt5/bump_cloth.png" alt="bump, cloth" width="33%"/>
+							<img src="images/pt5/bump_sphere.png" alt="bump, sphere" width="33%"/>
+							<img src="images/pt5/displ_sphere.png" alt="displacement, sphere" width="33%"/>
+						</figure>
+						<figcaption>Bump and displacement on surfaces (normal: 2, height: 1.5)</figcaption>
+
+						<p>
+							The effects of varying coarseness is more difficult to be observed under the bump shader. The most evident changes, which occur at the darker patches of the original texture, are only visible when zoomed in very closely on a particular region of the sphere surface. Whereas in the displacement shader the effects of coarseness is much more pronounced. In the figures below we are seeing that, compared to the standard settings, the coarseness level of <code>-o 16 -a 16</code> removed many protruding vertices from the surface of the sphere, causing it to slightly deform in shape. Setting it to the coarseness level of <code>-o 128 -a 128</code> returned a much more unifying rendering with more defined spikes across all the vertices.
+						</p>
+						<figure>
+							<img src="images/pt5/bump_sphere_o16.png" alt="bump, sphere" width="50%"/>
+							<img src="images/pt5/displ_sphere_o16.png" alt="displacement, sphere" width="50%"/>
+						</figure>
+						<figure>
+							<img src="images/pt5/bump_sphere_o128.png" alt="bump, sphere" width="50%"/>
+							<img src="images/pt5/displ_sphere_o128.png" alt="displacement, sphere" width="50%"/>
+						</figure>
+						<figcaption>Bump and displacement on surfaces (normal: 2, height: 1.5) at varying coarseness. The red renders are <code>-o 16 -a 16</code> and the blue renders are <code>-o 128 -a 128</code>.</figcaption>
+
+						<figure>
+							<img src="images/pt5/mirror_sphere.png" alt="sphere, mirror shading" width="50%"/>
+							<img src="images/pt5/mirror_cloth.png" alt="cloth, mirror shading" width="50%"/>
+						</figure>
+						<figcaption>Sphere and cloth with completely reflective mirror shading.</figcaption>
+
+					</div>
+				</section>
+
+				<!-- <div class="content">
+					<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</div> -->
+
+				<!-- <h2>Additional Notes (please remove)</h2>
 				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+					<li>You can also add code if you'd like as so: <code>code code code</code></li>
+					<li>If you'd like to add math equations, 
+						<ul>
+							<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
+							<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
+						</ul>
+					</li>
+				</ul> -->
+			</div>
 		</div>
 	</body>
 </html>
